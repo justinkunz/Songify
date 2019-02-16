@@ -1,0 +1,204 @@
+.jumbotron {
+    width:20%;
+    margin: 2.5%;
+    float: left;
+    text-align: center;
+    background: #2ebd59;
+    color: white;
+    background-size: 100% 100%;
+    display:none;
+    padding-top: 20px;
+}
+#signInJum {
+  background:none;
+  margin: 0;
+}
+#loadingJum, #signInJum {
+  width: 95%;
+  display: block;
+}
+a {
+  color: #1622b1;
+  font-weight: bold;
+}
+.my-4 {
+  background-color: white;
+}
+.subtxt {
+  font-size: 10px;
+}
+.jumbotron, body {
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+body {
+    background-image: url(https://blog.hdwallsource.com/wp-content/uploads/2014/11/gradient-background-26046-26731-hd-wallpapers.jpg.png);
+    min-height: 200vh;
+}
+#mainTopBar {
+  color: white;
+  font-size: 75px;
+  text-align:left;
+
+}
+
+#conn, #albs {
+    background-color: #1dd05d;
+    border-color: #1dd05d;
+}
+#son {
+    background-color: #2b2d2f;
+    border-color: #2b2d2f;
+    color: #fff;
+}
+.modal-body {
+  text-align: center;
+}
+
+.hiddenRec {
+  height: 100vh;
+  width:100%;
+  float: left;
+  /* background-color: purple; */
+}
+#conn {
+  float: left;
+  margin-left: 10px;
+  height: 60px;
+  width: 300px;
+  font-size: 30px;
+}
+#topPlay {
+  background-color:#6066af;
+  border-color: #6066af;
+  margin-top: 10px;
+  margin-left: 5px
+}
+#curPlay {
+  background-color:#1dd05d;;
+  border-color: #1dd05d;
+  margin-top: 10px;
+}
+.btn-info {
+  margin-left: 10px;
+}
+.sonDiv {
+  z-index: -1;
+  top: 110vh;
+}
+#spotLogo {
+    width: 35px;
+    height: 35px;
+    margin: 5px;
+}
+#zipInput {
+  width: 200px;
+  text-align: center;
+  margin: 0 auto;
+  float:left;
+  height:60px;
+  width:300px;
+  font-size: 40px
+}
+.form-group {
+  align-content: center;
+}
+.lead {
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+}
+
+.jumTitle {
+  font-family: 'Krub', sans-serif;
+}
+  body {
+    margin:0;
+    padding:0;
+    font-family:verdana;
+    background: black;
+    font-family: 'Open Sans Condensed', sans-serif;
+}
+.green {
+  /* background: #2ebd59 */
+}
+
+
+/* FORKED CODE FOR PRELOADER */
+.ring {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%); 
+	width: 150px;
+	height: 150px;
+	background: transparent;
+	border: 3px solid #3c3c3c;
+	border-radius: 50%;
+	text-align: center;
+	line-height: 150px;
+	font-family: sans-serif;
+	font-size: 20px;
+	color: #1ed760;
+	letter-spacing:4px;
+	text-transform: uppercase;
+	text-shadow:0 0 10px #1ed760;
+	box-shadow: 0 0 20px rgba(0,0,0,.5);
+}
+.ring:before {
+  content: '';
+  position: absolute;
+	top: -3px;
+	left: -3px;
+	width: 100%;
+	height: 100%;
+	border: 3px solid transparent;
+	border-top: 3px solid #1ed760;
+	border-right: 3px solid #1ed760;
+	border-radius: 50%;
+	animation: animateCircle 2s linear infinite;
+}
+span {
+	display: block;
+	position: absolute;
+	top: calc(50% - 2px);
+	left: 50%;
+	width: 50%;
+	height: 4px;
+  background: transparent;
+  transform-origin:left;
+	animation: animate 2s linear infinite;
+}
+span:before {
+	content:'';
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	background-color: #1ed760;
+	top: -6px;
+	right: -8px;
+	box-shadow: 0 0 20px #1ed760;
+}
+ @keyframes animateCircle
+ {
+   0%
+   {
+     transform: rotate(0deg);
+   }
+   100%
+   {
+     transform: rotate(360deg);
+   }
+ }
+ @keyframes animate
+ {
+   0%
+   {
+     transform: rotate(45deg);
+   }
+   100%
+   {
+     transform: rotate(405deg);
+   }
+ }

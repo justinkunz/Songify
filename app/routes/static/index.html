@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Your Spotify Stats</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="./spotify.png"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" media="screen" href="./main.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div id='spotLogoCont'>
+                <img id='spotLogo' src='spotify.png'>
+            </div>
+        <a class="navbar-brand" href="#">View Your Spotify Stats</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <button type="button" class="btn btn-success" id='albs'>Your Album Wall</button>
+                    <button type="button" class="btn btn-info" id='art'>Top Artists</button>
+                    <button type="button" class="btn btn-warning" id='son'>Top Songs</button>
+
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="jumbotron">
+        <div id='imgDiv'></div>
+    </div>
+    <style>
+    </style>
+    <script>
+        var albums = []
+        var called = false
+        var called_artist = false
+        $('#albs').on('click', function () {
+            $("#imgDiv").empty()
+            if (!called) {
+                getSongData(artSort)
+            }
+            else {
+                artSort(spotData)
+            }
+        })
+        $('#son').on('click', function () {
+            $("#imgDiv").empty()
+            if (!called) {
+                getSongData(son)
+            }
+            else {
+                son(spotData)
+            }
+        })
+        $('#art').on('click', function () {
+            $("#imgDiv").empty()
+            if (!called_artist) {
+                getArtData(son)
+            }
+            else {
+                son(spotData)
+            }
+        })
+
+        function artSort(res) {
+            console.log('art called')
+            console.log(res.items[0].album.images[1].url)
+            for (i = 0; i < res.items.length; i++) {
+                newImg = $("<img id='alb" + i + "' class='albImg' style='display: none' src='" + res.items[i].album.images[1].url + "'>")
+                albums.push(res.items[i].album.images[1].url)
+                $('#imgDiv').append(newImg)
+            }
+            fadeImg(res.items.length)
+        }
+        function son(res) {
+            console.log('song txt called')
+            console.log(res.items[0].name)
+            for (i = 0; i < res.items.length; i++) {
+                newTxt = "<div id='alb" + i + "' style='display: none'>" + (i + 1) + ". " + res.items[i].name + "</div> <br>"
+                $('#imgDiv').append(newTxt)
+            }
+            fadeImg(res.items.length)
+
+        }
+        function fadeImg(length) {
+            i = 0
+            console.log(length)
+            fadeAlb()
+            function fadeAlb() {
+                if (i > length) {
+                    console.log('return')
+                    return
+                }
+                console.log(i)
+                $('#alb' + i).fadeIn('slow')
+                i++
+                console.log(i)
+                setTimeout(fadeAlb, 300)
+            }
+
+        }
+        function getSongData(cb) {
+            console.log('called')
+            $.get('/get_data', function (data) {
+                console.log(data)
+                called = true
+                spotData = data
+                cb(spotData)
+
+            })
+        }
+        function getArtData(cb) {
+            console.log('called')
+            $.get('/get_data_artist', function (data) {
+                console.log(data)
+                called_artist = true
+                spotData_artist = data
+                cb(spotData_artist)
+
+            })
+        }
+    </script>
+</body>
+
+</html>

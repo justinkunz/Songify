@@ -1,0 +1,22 @@
+.jumbotron {
+    margin: 100px;
+    text-align: center;
+    background-color: #d5d9dd;
+}
+body {
+    background-image: url('./background.png')
+}
+#conn, #albs {
+    background-color: #1dd05d;
+    border-color: #1dd05d;
+}
+#son {
+    background-color: #2b2d2f;
+    border-color: #2b2d2f;
+    color: #fff;
+}
+#spotLogo {
+    width: 35px;
+    height: 35px;
+    margin: 5px;
+}

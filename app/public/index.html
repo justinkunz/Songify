@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Songify Me | Stats</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="./assets/spotify.png" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" media="screen" href="./assets/main.css" />
+    <script src="http://momentjs.com/downloads/moment.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Krub|Open+Sans+Condensed:300|Permanent+Marker" rel="stylesheet">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style='display: none'>
+        <div id='spotLogoCont'>
+            <img id='spotLogo' src='./assets/spotify.png'>
+        </div>
+        <a class="navbar-brand">Your Spotify Stats</a>
+        <button type="button" class="btn btn-dark" id='logOutBtn'>Log Out</button>
+        <button type="button" class="btn btn-info" id='playlist'>Create A Playlist</button>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class='hiddenRec'></div>
+    <div id='clearFloat'></div>
+
+    <div id='loadingJum'>
+        <div id='loadingDiv'>
+            <div class="ring">
+                Loading
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <div class="jumbotron">
+        <div id='sonDiv'>
+            <h1 class='lead jumTitle' style='display: none'>Your Top 50 Songs</h1>
+            <hr class='my-4'>
+        </div>
+    </div>
+    <div class="jumbotron">
+        <div id='artDiv'>
+            <h1 class='lead jumTitle' style='display: none'>Your Top 50 Artists</h1>
+            <hr class='my-4'>
+        </div>
+    </div>
+    <div class="jumbotron">
+        <div id='relDiv'>
+            <h1 class='lead jumTitle' style='display: none'>Recommended Artists</h1>
+            <hr class='my-4'>
+        </div>
+    </div>
+    <div class="jumbotron">
+        <div id='eveDiv'>
+            <h1 class='lead jumTitle' style='display: none'>Events Near You</h1>
+            <hr class='my-4'>
+        </div>
+    </div>
+    <div class="modal fade" id="playlistModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create A Playlist</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    What kind of playlist would you like to add to your Spotify Account?
+                    <br>
+                    <button type="button" id='curPlay' class="btn btn-warning">Curated Playlist</button>
+                    <button type="button" id='topPlay' class="btn btn-info">My Top 50 Songs</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="playlistConf" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Playlist Created!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Your playlist has been succesfully created. It may take a few minutes before the new playlist is reflected on your Spotify
+                    account.
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+    </style>
+    <script>
+        var albums = []
+        var topUri = []
+        var called = false
+        var called_artist = false
+        var songCalled = false
+        var relCalled = false
+        var conCalled = false
+
+
+        //on load, get artist data
+        getArtData(son)
+
+        $("#logOutBtn").on('click', function (e) {
+            e.preventDefault
+            window.location.replace('logout')
+        })
+
+        $("#playlist").on('click', function (e) {
+            e.preventDefault
+            $("#playlistModal").modal("toggle")
+        });
+        $("#topPlay").on('click', function (e) {
+            e.preventDefault
+            var playlistObj = {
+                uris: topUri.join(',')
+            }
+            $.post('/create_playlist', playlistObj)
+            $("#playlistModal").modal("toggle")
+            $("#playlistConf").modal("toggle")
+        });
+
+        function artSort(res) {
+            console.log('art called')
+            console.log(res.items[0].album.images[1].url)
+            for (i = 0; i < res.items.length; i++) {
+                newImg = $("<img id='alb" + i + "' class='albImg' style='display: none' src='" + res.items[i].album.images[1].url + "'>")
+                albums.push(res.items[i].album.images[1].url)
+                $('#imgDiv').append(newImg)
+            }
+            callNext()
+        }
+
+        //used by artist and track API call function, creates hidden data  
+        function son(res, id) {
+            console.log('song txt called')
+            console.log(res.items[0].name)
+            for (i = 0; i < res.items.length; i++) {
+                newTxt = "<div class='row" + i + "' id='" + id + i + "' style='display: none'>" + (i + 1) + ". " + res.items[i].name + "</div> <br>"
+                $('#' + id + 'Div').append(newTxt)
+            }
+            callNext()
+
+        }
+
+        //call next api function, then prepare page and call fade function
+        function callNext() {
+
+            if (!relCalled) {
+                relCalled = true
+                relatedArtists()
+            }
+            else if (!conCalled) {
+                conCalled = true
+                conAPI()
+            }
+            else if (!songCalled) {
+                songCalled = true
+                getSongData(son)
+            }
+            else {
+                $(".jumbotron").fadeIn("slow")
+                $('.navbar').fadeIn('slow')
+                $("#loadingJum").fadeOut("slow")
+                $(".hiddenRec").animate({ height: 0 }, 2000);
+                i = 0
+                fadeRows()
+            }
+
+            //fade in rows after page is prepared and api functions have completed running
+            function fadeRows() {
+
+                if (i === 0) {
+                    $('.lead').fadeIn(5000)
+                }
+
+                $(".row" + i).fadeIn('slow')
+                i++
+                setTimeout(function () {
+                    fadeRows()
+                }, 300)
+            }
+
+        }
+
+        //gets song data from API
+        function getSongData(cb) {
+            console.log('called song')
+            $.get('/get_data', function (data) {
+                called = true
+                spotData = data
+                console.log(spotData)
+                for (i = 0; i < spotData.items.length; i++) {
+                    topUri.push(spotData.items[i].uri)
+                }
+                console.log(topUri)
+                son(spotData, 'son')
+
+
+            })
+        }
+
+        //pulls top 50 artist data
+        function getArtData(cb) {
+            console.log('called')
+            $.get('/get_data_artist', function (data) {
+                console.log(data)
+                called_artist = true
+                spotData_artist = data
+                son(spotData_artist, 'art')
+            })
+        }
+
+        //pulls data for related artists
+        function relatedArtists() {
+            $.get('/get_related', function (data) {
+                $('#viewRes').modal('toggle')
+                for (i = 0; i < data.length; i++) {
+                    newTxt = "<div class='row" + i + "' id='rel" + i + "' style='display: none'>" + (i + 1) + ". " + data[i] + "</div> <br>"
+                    $('#relDiv').append(newTxt)
+                }
+                callNext()
+            })
+        }
+
+        //pulls concert data
+        function conAPI() {
+            $.get('/api/events', function (data) {
+                for (i = 0; i < data.length; i++) {
+                    var lineup = data[i].lineup.join(' , ')
+                    newTxt = " \
+                    <div class='row" + i + "' id='con" + i + "' style='display: none'><div>" + lineup + "</div> \
+                    <div>@ " + data[i].venue.name + "</div> \
+                    <div>" + data[i].venue.city + ", " + data[i].venue.region + "</div>\
+                    <div>" + moment(data[i].datetime).format("MM/DD/YYYY") + "</div> \
+                    <a href='" + data[i].offers[0].url + "'>Get Tickets</a> \
+                    <hr class='my-4'></div>"
+
+                    $('#eveDiv').append(newTxt)
+                }
+                callNext()
+            })
+        }
+    </script>
+</body>
+
+</html>

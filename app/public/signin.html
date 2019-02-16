@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Connect to Spotify</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="./assets/spotify.png" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" media="screen" href="./assets/main.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="jumbotron" id='signInJum'>
+        <p class="lead" id='mainTopBar'>To view your spotify stats, enter your zip code and connect your spotify account</p>
+        <form id='zipForm'>
+            <div class="form-group">
+                <input type="text" class="form-control" id="zipInput" placeholder="Your Zip Code">
+                <!-- <small id="emailHelp" class="form-text text-muted">We need this info to locate concerts near you</small> -->
+            </div>
+        </form>
+        <button type="button" class="btn btn-dark" id='conn'>Connect To Spotify</button>
+    </div>
+    <style>
+    </style>
+    <script>
+
+        $('#conn').on('click', function () {
+            zipCd = $("#zipInput").val().trim()
+            if (zipCd === '' || isNaN(zipCd) || zipCd.length !== 5) {
+                alert('Please enter a valid 5 digit zip code')
+                return
+            }
+            $.ajax('/api/post/zip', {
+                type: "POST",
+                data: {
+                    zip: $("#zipInput").val().trim()
+                }
+            }).then(function (d) {
+                console.log('done')
+            })
+            window.location.replace('connect_spotify')
+        })
+
+    </script>
+</body>
+
+</html>
